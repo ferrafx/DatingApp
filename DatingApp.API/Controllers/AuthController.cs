@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using DatingApp.API.Data;
 using DatingApp.API.Dtos;
 using DatingApp.API.Model;
@@ -18,8 +19,10 @@ namespace DatingApp.API.Controllers
     {
         private readonly IAuthRepository _repo;
         private readonly IConfiguration _config;
-        public AuthController(IAuthRepository repo, IConfiguration config)
+        private readonly IMapper _mapper;
+        public AuthController(IAuthRepository repo, IConfiguration config, IMapper mapper)
         {
+            _mapper = mapper;
             _config = config;
             _repo = repo;
         }
@@ -67,7 +70,7 @@ namespace DatingApp.API.Controllers
             //and use the key in the signin credentials, encrypting it in hash algorithm
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
             //create the token: create a tokendescriptor where pass the claims as subjects, pass exipry date, pass signin credentials 
-            var tokenDescriptor = new SecurityTokenDescriptor 
+            var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.Now.AddDays(1),
@@ -77,11 +80,17 @@ namespace DatingApp.API.Controllers
             var tokenHandler = new JwtSecurityTokenHandler();
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
+            
+            //map properties into object user, for storage in localstorage
+            var user = _mapper.Map<UserForListDto>(userFromRepo);
+
             //send the response to the client with the token in it
-            return Ok(new {
-                token = tokenHandler.WriteToken(token)
+            return Ok(new
+            {
+                token = tokenHandler.WriteToken(token),
+                user
             });
-         
+
         }
 
     }

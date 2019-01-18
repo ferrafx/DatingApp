@@ -1,8 +1,8 @@
 using System;
 
-namespace DatingApp.API.Model
+namespace DatingApp.API.Dtos
 {
-    public class Photo
+    public class PhotoForReturnDto
     {
         public int Id { get; set; }
         public string Url { get; set; }
@@ -10,8 +10,5 @@ namespace DatingApp.API.Model
         public DateTime DateAdded { get; set; }
         public bool IsMain { get; set; }
         public string PublicId { get; set; }
-        public User User {get; set;} //to have a cascade delete
-        public int  UserID { get; set; }
-
     }
 }

@@ -1,0 +1,3 @@
+lez 75
+perchè se modelstate is not valid non si pu fare semplicemente: return View(model);
+tanto ritorna sempre lo stesso oggetto che è arrivato prima..
