@@ -39,8 +39,8 @@ login(model:any) {
   );
 }
 
-register(model:any){ //the register method of AuthController.cs API, takes UserForRegisterDto
-  return this.http.post(this.baseUrl + 'register', model);
+register(user:User){ //the register method of AuthController.cs API, takes UserForRegisterDto
+  return this.http.post(this.baseUrl + 'register', user);
 }
 
 loggedIn(){
